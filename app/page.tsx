@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, CalendarRange, Briefcase, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarDays, CalendarRange, Briefcase, Sparkles, Lightbulb } from "lucide-react";
 import {
   bridgeDays,
   formatNorwegianDate,
@@ -8,6 +8,7 @@ import {
   longWeekends,
   nextPublicHoliday,
   parseIso,
+  planningPicks,
   publicHolidays,
   todayInOslo,
   workdaysInYear,
@@ -47,6 +48,7 @@ export default function HomePage() {
   const bridges = bridgeDays(year);
   const workLeft = workdaysRemainingInYear(today);
   const workTotal = workdaysInYear(year);
+  const planTips = planningPicks(year).slice(0, 4);
 
   return (
     <>
@@ -93,11 +95,11 @@ export default function HomePage() {
             <Link href="/neste-fridag" className="btn-primary">
               Neste fridag <ArrowRight className="h-4 w-4" />
             </Link>
+            <Link href={`/fa-mest-fri-${year}`} className="btn-ghost">
+              Få mest fri i {year}
+            </Link>
             <Link href={`/helligdager-${year}`} className="btn-ghost">
               Helligdager {year}
-            </Link>
-            <Link href={`/langhelger-${year}`} className="btn-ghost">
-              Langhelger {year}
             </Link>
           </div>
         </div>
@@ -154,7 +156,8 @@ export default function HomePage() {
                     <div className="text-sm text-muted mt-0.5">
                       {lw.days} dager sammenhengende ·{" "}
                       {lw.includes.holidays.join(", ") || "helg"}
-                      {lw.includes.bridge && " · inneklemt dag inngår"}
+                      {lw.vacationDaysNeeded > 0 &&
+                        ` · ${lw.vacationDaysNeeded} feriedag${lw.vacationDaysNeeded > 1 ? "er" : ""} kreves`}
                     </div>
                   </li>
                 );
@@ -220,6 +223,76 @@ export default function HomePage() {
               Regn ut arbeidsdager mellom datoer <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="border-t border-line/60">
+        <div className="site-container py-12">
+          <SectionHeading
+            icon={<Lightbulb className="h-4 w-4" />}
+            kicker="Planlegging"
+            title="Få mest fri med færrest feriedager"
+          />
+          <p className="mt-3 max-w-2xl text-muted">
+            Hvilke perioder i {year} gir mest sammenhengende fri for hver
+            feriedag du bruker? Tipsene under er beregnet fra norske
+            helligdager — inneklemte dager er fortsatt vanlige arbeidsdager.
+          </p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {planTips.map((p) => (
+              <li key={p.longWeekend.start} className="card-soft px-4 py-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-ink font-medium">{p.label}</span>
+                  <span
+                    className={
+                      p.vacationDays === 0
+                        ? "chip-tag"
+                        : "chip-tag chip-tag--practical"
+                    }
+                  >
+                    {p.vacationDays === 0
+                      ? "0 feriedager"
+                      : p.vacationDays === 1
+                      ? "1 feriedag"
+                      : `${p.vacationDays} feriedager`}
+                  </span>
+                </div>
+                <p className="text-sm text-muted mt-1">{p.description}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-sm">
+            <Link
+              href={`/fa-mest-fri-${year}`}
+              className="text-accent hover:underline"
+            >
+              Se hele rangeringen for {year} →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-line/60 bg-surface/60">
+        <div className="site-container py-10">
+          <SectionHeading kicker="Begreper" title="Hva betyr ordene?" />
+          <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+            <Term
+              term="Offentlig helligdag"
+              def="Lovbestemt fridag som 1. mai, 17. mai, langfredag og 1. juledag. Norge har 12 i året."
+            />
+            <Term
+              term="Praktisk fridag"
+              def="Dager som julaften og nyttårsaften — ikke offentlig helligdag, men mange har fri eller halv dag etter avtale."
+            />
+            <Term
+              term="Inneklemt dag"
+              def="Vanlig arbeidsdag mellom en helligdag og en helg. Ikke automatisk fri — du må ta den som feriedag."
+            />
+            <Term
+              term="Merkedag"
+              def="Tradisjonell eller kirkelig markering som ikke gir fri (f.eks. palmesøndag, allehelgensdag)."
+            />
+          </dl>
         </div>
       </section>
 
@@ -319,6 +392,15 @@ function SectionHeading({
       <h2 className="mt-2 font-display tracking-display text-ink text-2xl sm:text-3xl">
         {title}
       </h2>
+    </div>
+  );
+}
+
+function Term({ term, def }: { term: string; def: string }) {
+  return (
+    <div className="card-soft px-4 py-3">
+      <dt className="text-ink font-medium">{term}</dt>
+      <dd className="text-sm text-muted mt-1 leading-relaxed">{def}</dd>
     </div>
   );
 }

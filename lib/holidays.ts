@@ -41,7 +41,12 @@ export interface LongWeekend {
   /** Antall sammenhengende fridager */
   days: number;
   /** Hva strekket inneholder */
-  includes: { holidays: string[]; bridge?: string };
+  includes: { holidays: string[]; bridges: string[] };
+  /**
+   * Antall feriedager du må ta for å få hele strekket = antall inneklemte
+   * dager som inngår. 0 = "gratis langhelg".
+   */
+  vacationDaysNeeded: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -357,14 +362,14 @@ export function longWeekends(y: number): LongWeekend[] {
     const runStart = new Date(cursor.getTime());
     let runEnd = new Date(cursor.getTime());
     const holidays: string[] = [];
-    let bridge: string | undefined;
+    const bridges: string[] = [];
     while (true) {
       const s = isOff(runEnd);
       if (!s.off) break;
       const iso = isoDate(runEnd);
       const h = holidaysByDate.get(iso);
       if (h) holidays.push(h.name);
-      if (s.isBridge) bridge = iso;
+      if (s.isBridge) bridges.push(iso);
       const next = addDays(runEnd, 1);
       if (next > addDays(end, 7)) break;
       const sn = isOff(next);
@@ -374,12 +379,13 @@ export function longWeekends(y: number): LongWeekend[] {
     const days = daysBetween(runStart, runEnd) + 1;
     // Langhelg krever ≥3 dager OG minst én helligdag (ellers er det bare en
     // vanlig helg) ELLER en inneklemt dag.
-    if (days >= 3 && (holidays.length > 0 || bridge)) {
+    if (days >= 3 && (holidays.length > 0 || bridges.length > 0)) {
       result.push({
         start: isoDate(runStart),
         end: isoDate(runEnd),
         days,
-        includes: { holidays, bridge },
+        includes: { holidays, bridges },
+        vacationDaysNeeded: bridges.length,
       });
     }
     cursor = addDays(runEnd, 1);
@@ -435,4 +441,81 @@ export function fridayAfterAscension(y: number): Date {
   const easter = easterSunday(y);
   // Kristi himmelfart = easter + 39 (torsdag) → +1 = fredag
   return addDays(easter, 40);
+}
+
+// ---------------------------------------------------------------------------
+// Planlegging: "få mest fri med færrest feriedager"
+// ---------------------------------------------------------------------------
+
+/**
+ * En enkelt planleggings-tips: gitt et langhelg-strekk, beskriv hvor mange
+ * feriedager du må ta og hva du får igjen.
+ */
+export interface PlanningPick {
+  /** Underliggende langhelg */
+  longWeekend: LongWeekend;
+  /** Antall feriedager du må ta for å låse opp hele strekket */
+  vacationDays: number;
+  /** Antall fridager du får totalt */
+  totalDaysOff: number;
+  /** Effektivitet: fridager per feriedag (∞ hvis 0 feriedager) */
+  efficiency: number;
+  /** Kort overskrift, f.eks. "Påske" eller "Kristi himmelfart" */
+  label: string;
+  /** Lengre forklaring, klar for visning */
+  description: string;
+}
+
+function labelForLongWeekend(lw: LongWeekend): string {
+  const h = lw.includes.holidays;
+  if (h.some((n) => /påskedag|langfredag|skjær/i.test(n))) return "Påsken";
+  if (h.some((n) => /pinsedag/i.test(n))) return "Pinse";
+  if (h.some((n) => /Kristi himmelfart/i.test(n))) return "Kristi himmelfart";
+  if (h.some((n) => /Grunnlovsdag/i.test(n)) && h.some((n) => /Arbeidernes dag/i.test(n))) return "Mai-helgen";
+  if (h.some((n) => /Grunnlovsdag/i.test(n))) return "17. mai";
+  if (h.some((n) => /Arbeidernes dag/i.test(n))) return "1. mai";
+  if (h.some((n) => /juledag/i.test(n))) return "Jul";
+  if (h.some((n) => /nyttårsdag/i.test(n))) return "Nyttår";
+  return h[0] ?? "Langhelg";
+}
+
+/**
+ * Rangerte planleggings-tips for et år: hvilke perioder gir mest
+ * sammenhengende fri med færrest feriedager?
+ *
+ * Sortering: først etter færrest feriedager (0 = "gratis"), så etter
+ * lengst strekk. Returnerer alle langhelger med ferdig-formaterte
+ * beskrivelser klare for visning.
+ */
+export function planningPicks(y: number): PlanningPick[] {
+  return longWeekends(y)
+    .map((lw): PlanningPick => {
+      const label = labelForLongWeekend(lw);
+      const vac = lw.vacationDaysNeeded;
+      const eff = vac === 0 ? Infinity : lw.days / vac;
+      const description = buildPickDescription(label, lw);
+      return {
+        longWeekend: lw,
+        vacationDays: vac,
+        totalDaysOff: lw.days,
+        efficiency: eff,
+        label,
+        description,
+      };
+    })
+    .sort((a, b) => {
+      if (a.vacationDays !== b.vacationDays) return a.vacationDays - b.vacationDays;
+      return b.totalDaysOff - a.totalDaysOff;
+    });
+}
+
+function buildPickDescription(label: string, lw: LongWeekend): string {
+  const vac = lw.vacationDaysNeeded;
+  if (vac === 0) {
+    return `${label} gir ${lw.days} sammenhengende fridager uten å bruke feriedag.`;
+  }
+  if (vac === 1) {
+    return `Tar du fri den inneklemte dagen, får du ${lw.days} sammenhengende fridager i ${label.toLowerCase()}.`;
+  }
+  return `Tar du fri de ${vac} inneklemte dagene, får du ${lw.days} sammenhengende fridager i ${label.toLowerCase()}.`;
 }

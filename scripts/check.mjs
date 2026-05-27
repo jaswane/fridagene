@@ -31,7 +31,7 @@ for (const lw of longWeekends(2026))
     lw.end,
     "(" + lw.days + "d)",
     lw.includes.holidays.join("; ") || "helg",
-    lw.includes.bridge ? "+bridge " + lw.includes.bridge : ""
+    lw.includes.bridges.length ? "+bridges " + lw.includes.bridges.join(",") : ""
   );
 
 console.log("\n--- Friday after Ascension 2026 ---", isoDate(fridayAfterAscension(2026)));

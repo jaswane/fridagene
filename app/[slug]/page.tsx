@@ -7,6 +7,7 @@ import { LongWeekendsYearPage } from "@/components/pages/LongWeekendsYearPage";
 import { BridgeDaysYearPage } from "@/components/pages/BridgeDaysYearPage";
 import { WorkdaysYearPage } from "@/components/pages/WorkdaysYearPage";
 import { SeasonPage } from "@/components/pages/SeasonPage";
+import { FaMestFriYearPage } from "@/components/pages/FaMestFriYearPage";
 
 export const dynamicParams = false;
 // Daglig revalidering så header/footer holder seg ferskt på årets skifte —
@@ -51,6 +52,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         description: `Inneklemte dager i ${year}: arbeidsdager mellom helligdag og helg som mange velger å ta fri for langhelg.`,
         path: `/inneklemte-dager-${year}`,
       });
+    case "fa-mest-fri":
+      return pageMetadata({
+        title: `Få mest fri i ${year} — planlegging av feriedager`,
+        description: `Hvilke perioder i ${year} gir mest sammenhengende fri med færrest feriedager? Rangerte tips basert på norske helligdager.`,
+        path: `/fa-mest-fri-${year}`,
+      });
     case "paske":
       return pageMetadata({
         title: `Påsken ${year} — datoer og helligdager`,
@@ -92,6 +99,8 @@ export default async function Page({ params }: PageProps) {
       return <LongWeekendsYearPage year={year} />;
     case "inneklemte-dager":
       return <BridgeDaysYearPage year={year} />;
+    case "fa-mest-fri":
+      return <FaMestFriYearPage year={year} />;
     case "paske":
     case "pinse":
     case "jul":

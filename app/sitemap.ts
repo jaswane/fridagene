@@ -14,6 +14,7 @@ const STATIC_ROUTES = [
 
 function priorityFor(slug: string): number {
   if (slug.startsWith("helligdager-")) return 0.8;
+  if (slug.startsWith("fa-mest-fri-")) return 0.8;
   if (slug.startsWith("arbeidsdager-")) return 0.7;
   if (slug.startsWith("langhelger-")) return 0.7;
   if (slug.startsWith("inneklemte-dager-")) return 0.7;
