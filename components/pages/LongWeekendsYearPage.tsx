@@ -1,0 +1,126 @@
+import Link from "next/link";
+import {
+  longWeekends,
+  parseIso,
+  formatNorwegianDate,
+  formatNorwegianWeekday,
+} from "@/lib/holidays";
+import { PageHeader } from "@/components/PageHeader";
+import { Disclaimer } from "@/components/Disclaimer";
+import { JsonLd } from "@/components/JsonLd";
+import {
+  breadcrumbSchema,
+  itemListSchema,
+  webPageSchema,
+} from "@/lib/schema";
+import { SITE } from "@/lib/site";
+
+export function LongWeekendsYearPage({ year }: { year: number }) {
+  const longs = longWeekends(year);
+  const itemList = itemListSchema({
+    name: `Langhelger i Norge ${year}`,
+    items: longs.map((lw) => ({
+      name: `${formatNorwegianDate(parseIso(lw.start))} – ${formatNorwegianDate(
+        parseIso(lw.end)
+      )}`,
+      description: `${lw.days} dager sammenhengende fri. ${lw.includes.holidays.join(
+        ", "
+      ) || "helg"}.`,
+    })),
+  });
+
+  return (
+    <>
+      <JsonLd
+        data={[
+          webPageSchema({
+            url: `${SITE.url}/langhelger-${year}`,
+            name: `Langhelger ${year}`,
+            description: `Alle langhelger i Norge i ${year} — strekk på tre eller flere sammenhengende fridager.`,
+          }),
+          breadcrumbSchema([
+            { name: "Forsiden", url: SITE.url },
+            { name: `Langhelger ${year}`, url: `${SITE.url}/langhelger-${year}` },
+          ]),
+          itemList,
+        ]}
+      />
+
+      <div className="site-container pb-12">
+        <PageHeader
+          kicker="Langhelger"
+          title={`Langhelger i Norge ${year}`}
+          lede={`${longs.length} langhelger i ${year} — strekk på tre eller flere sammenhengende dager der minst én er offentlig helligdag. Inneklemte dager kan forlenge strekket hvis du tar dem fri.`}
+          crumbs={[
+            { name: "Forsiden", href: "/" },
+            { name: `Langhelger ${year}` },
+          ]}
+        />
+
+        <section className="mt-8">
+          {longs.length === 0 ? (
+            <p className="text-muted">Ingen langhelger funnet i {year}.</p>
+          ) : (
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {longs.map((lw) => {
+                const start = parseIso(lw.start);
+                const end = parseIso(lw.end);
+                return (
+                  <li key={lw.start} className="card p-5">
+                    <div className="text-[0.72rem] uppercase tracking-[0.14em] text-muted">
+                      {lw.days} sammenhengende dager
+                    </div>
+                    <div className="font-display text-xl text-ink mt-1">
+                      {formatNorwegianDate(start).replace(` ${year}`, "")} –{" "}
+                      {formatNorwegianDate(end)}
+                    </div>
+                    <div className="text-sm text-muted mt-1">
+                      <span className="capitalize">
+                        {formatNorwegianWeekday(start)}
+                      </span>{" "}
+                      til {formatNorwegianWeekday(end)}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {lw.includes.holidays.map((h) => (
+                        <span key={h} className="chip-tag">{h}</span>
+                      ))}
+                      {lw.includes.bridge && (
+                        <span className="chip-tag chip-tag--practical">
+                          Inneklemt dag inngår
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+
+        <section className="mt-10 narrow-container prose-soft px-0">
+          <h2 className="font-display text-2xl text-ink">Slik leser du listen</h2>
+          <p className="mt-2">
+            Vi regner et strekk som langhelg når det er minst tre sammenhengende
+            dager der minst én er offentlig helligdag. Inneklemte dager —
+            vanlige arbeidsdager som ligger mellom helligdag og helg — kan
+            forlenge strekket hvis du velger å ta dem fri.
+          </p>
+          <p className="mt-3">
+            Se også:{" "}
+            <Link href={`/helligdager-${year}`}>Helligdager {year}</Link>
+            {" · "}
+            <Link href={`/inneklemte-dager-${year}`}>
+              Inneklemte dager {year}
+            </Link>
+            {" · "}
+            <Link href={`/langhelger-${year + 1}`}>
+              Langhelger {year + 1}
+            </Link>
+          </p>
+        </section>
+
+        <Disclaimer />
+      </div>
+    </>
+  );
+}
