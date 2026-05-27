@@ -6,6 +6,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = pageMetadata({
   title: "Ansvarsfraskrivelse",
   description:

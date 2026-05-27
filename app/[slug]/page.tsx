@@ -9,6 +9,9 @@ import { WorkdaysYearPage } from "@/components/pages/WorkdaysYearPage";
 import { SeasonPage } from "@/components/pages/SeasonPage";
 
 export const dynamicParams = false;
+// Daglig revalidering så header/footer holder seg ferskt på årets skifte —
+// selve innholdet er deterministisk per år.
+export const revalidate = 86400;
 
 export function generateStaticParams() {
   return allYearSlugs();

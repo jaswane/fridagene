@@ -263,6 +263,40 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <section className="border-t border-line/60">
+        <div className="site-container py-10">
+          <SectionHeading kicker="Søsterverktøy" title="Flere nyttige verktøy" />
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <li>
+              <a
+                href="https://www.ukenummeret.no/"
+                target="_blank"
+                rel="noopener"
+                className="card-soft block px-4 py-3 hover:border-accent"
+              >
+                <div className="text-ink font-medium">Ukenummeret.no</div>
+                <div className="text-sm text-muted mt-0.5">
+                  Se hvilket ukenummer det er.
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.utregn.no/"
+                target="_blank"
+                rel="noopener"
+                className="card-soft block px-4 py-3 hover:border-accent"
+              >
+                <div className="text-ink font-medium">Utregn.no</div>
+                <div className="text-sm text-muted mt-0.5">
+                  Kalkulatorer og enkle utregninger.
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
     </>
   );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SITE } from "@/lib/site";
+import { getCurrentYear } from "@/lib/currentYear";
 import {
   jsonLdScript,
   organizationSchema,
@@ -65,6 +66,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const currentYear = getCurrentYear();
   return (
     <html
       lang="nb"
@@ -80,9 +82,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <SiteHeader />
+        <SiteHeader currentYear={currentYear} />
         <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <SiteFooter currentYear={currentYear} />
       </body>
     </html>
   );

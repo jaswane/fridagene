@@ -5,17 +5,20 @@ import { usePathname } from "next/navigation";
 import { CalendarDays, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const NAV = [
-  { href: "/neste-fridag", label: "Neste fridag" },
-  { href: "/helligdager-2026", label: "Helligdager" },
-  { href: "/langhelger-2026", label: "Langhelger" },
-  { href: "/inneklemte-dager-2026", label: "Inneklemte" },
-  { href: "/arbeidsdager", label: "Arbeidsdager" },
-];
+function buildNav(year: number) {
+  return [
+    { href: "/neste-fridag", label: "Neste fridag" },
+    { href: `/helligdager-${year}`, label: "Helligdager" },
+    { href: `/langhelger-${year}`, label: "Langhelger" },
+    { href: `/inneklemte-dager-${year}`, label: "Inneklemte" },
+    { href: "/arbeidsdager", label: "Arbeidsdager" },
+  ];
+}
 
-export function SiteHeader() {
+export function SiteHeader({ currentYear }: { currentYear: number }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const NAV = buildNav(currentYear);
 
   return (
     <header className="relative border-b border-line/70 bg-surface/80 backdrop-blur">
