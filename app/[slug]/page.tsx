@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   switch (kind) {
     case "helligdager":
       return pageMetadata({
-        title: `Helligdager ${year} — Norske røde dager`,
-        description: `Alle offentlige helligdager i Norge i ${year} med dato og ukedag.`,
+        title: `Helligdager ${year} — alle røde dager i Norge`,
+        description: `Komplett oversikt over de 12 offentlige helligdagene i Norge i ${year}, med dato og ukedag.`,
         path: `/helligdager-${year}`,
       });
     case "arbeidsdager":
@@ -47,8 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       });
     case "inneklemte-dager":
       return pageMetadata({
-        title: `Inneklemte dager ${year} — Norge`,
-        description: `Inneklemte dager i Norge i ${year} — vanlige arbeidsdager mellom helligdag og helg.`,
+        title: `Inneklemte dager ${year} i Norge`,
+        description: `Inneklemte dager i ${year}: arbeidsdager mellom helligdag og helg som mange velger å ta fri for langhelg.`,
         path: `/inneklemte-dager-${year}`,
       });
     case "paske":

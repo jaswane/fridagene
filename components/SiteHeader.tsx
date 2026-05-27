@@ -63,6 +63,8 @@ export function SiteHeader({ currentYear }: { currentYear: number }) {
         <button
           type="button"
           aria-label={open ? "Lukk meny" : "Åpne meny"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
           className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface text-ink"
           onClick={() => setOpen((v) => !v)}
         >
@@ -72,6 +74,7 @@ export function SiteHeader({ currentYear }: { currentYear: number }) {
 
       {open && (
         <nav
+          id="mobile-menu"
           aria-label="Mobilmeny"
           className="md:hidden border-t border-line bg-surface"
         >

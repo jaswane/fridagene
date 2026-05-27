@@ -24,7 +24,7 @@ export function pageMetadata(input: PageMetaInput): Metadata {
       description: input.description,
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: input.title,
       description: input.description,
     },

@@ -3,6 +3,7 @@ import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Analytics } from "@/components/Analytics";
 import { SITE } from "@/lib/site";
 import { getCurrentYear } from "@/lib/currentYear";
 import {
@@ -42,12 +43,9 @@ export const metadata: Metadata = {
     description: SITE.description,
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Fridagene.no",
     description: SITE.description,
-  },
-  icons: {
-    icon: "/icon.svg",
   },
   robots: { index: true, follow: true },
 };
@@ -85,6 +83,7 @@ export default function RootLayout({
         <SiteHeader currentYear={currentYear} />
         <main className="flex-1">{children}</main>
         <SiteFooter currentYear={currentYear} />
+        <Analytics />
       </body>
     </html>
   );
