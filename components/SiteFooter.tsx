@@ -6,10 +6,10 @@ function buildColumns(year: number) {
     {
       heading: "Fridager",
       items: [
+        { href: "/er-det-apent-i-dag", label: "Er det åpent i dag?" },
         { href: "/neste-fridag", label: "Neste fridag" },
         { href: `/helligdager-${year}`, label: `Helligdager ${year}` },
         { href: `/helligdager-${year + 1}`, label: `Helligdager ${year + 1}` },
-        { href: `/helligdager-${year + 2}`, label: `Helligdager ${year + 2}` },
       ],
     },
     {

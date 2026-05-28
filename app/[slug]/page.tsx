@@ -10,9 +10,11 @@ import { SeasonPage } from "@/components/pages/SeasonPage";
 import { FaMestFriYearPage } from "@/components/pages/FaMestFriYearPage";
 import { FlagDaysYearPage } from "@/components/pages/FlagDaysYearPage";
 
-export const dynamicParams = false;
-// Daglig revalidering så header/footer holder seg ferskt på årets skifte —
-// selve innholdet er deterministisk per år.
+// dynamicParams = true: år innenfor vinduet som ikke ble prebuilt (f.eks.
+// currentYear + 10 etter et årsskifte) rendres on-demand. Ukjente/ugyldige
+// slugs gir notFound() via parseYearSlug, så dette åpner ikke for søppel.
+export const dynamicParams = true;
+// Daglig revalidering så header/footer og årsvindu holder seg ferskt.
 export const revalidate = 86400;
 
 export function generateStaticParams() {

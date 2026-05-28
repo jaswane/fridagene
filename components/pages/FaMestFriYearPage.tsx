@@ -7,6 +7,7 @@ import {
 } from "@/lib/holidays";
 import { PageHeader } from "@/components/PageHeader";
 import { Disclaimer } from "@/components/Disclaimer";
+import { HistoricalNote } from "@/components/HistoricalNote";
 import { JsonLd } from "@/components/JsonLd";
 import {
   breadcrumbSchema,
@@ -79,6 +80,8 @@ export function FaMestFriYearPage({ year }: { year: number }) {
             { name: `Få mest fri i ${year}` },
           ]}
         />
+
+        <HistoricalNote year={year} />
 
         {freebies.length > 0 && (
           <Section

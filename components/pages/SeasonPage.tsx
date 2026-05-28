@@ -14,6 +14,7 @@ import {
 import { PageHeader } from "@/components/PageHeader";
 import { HolidayList } from "@/components/HolidayList";
 import { Disclaimer } from "@/components/Disclaimer";
+import { HistoricalNote } from "@/components/HistoricalNote";
 import { JsonLd } from "@/components/JsonLd";
 import {
   breadcrumbSchema,
@@ -102,6 +103,8 @@ export function SeasonPage({ season, year }: { season: Season; year: number }) {
           ]}
         />
 
+        <HistoricalNote year={year} />
+
         <section className="mt-8">
           <h2 className="font-display text-2xl text-ink mb-3">Dager og datoer</h2>
           <HolidayList holidays={days} />
@@ -133,6 +136,14 @@ export function SeasonPage({ season, year }: { season: Season; year: number }) {
               <>
                 {" · "}
                 <Link href={`/flaggdager-${year}`}>Flaggdager {year}</Link>
+              </>
+            )}
+            {season === "pinse" && (
+              <>
+                {" · "}
+                <Link href="/nar-stenger-butikkene-pinseaften">
+                  Når stenger butikkene pinseaften?
+                </Link>
               </>
             )}
             {" · "}

@@ -17,6 +17,7 @@ import {
 import { JsonLd } from "@/components/JsonLd";
 import { faqSchema, webPageSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
+import { getDayStatus } from "@/lib/dayStatus";
 
 export const revalidate = 3600;
 
@@ -49,6 +50,7 @@ export default function HomePage() {
   const workLeft = workdaysRemainingInYear(today);
   const workTotal = workdaysInYear(year);
   const planTips = planningPicks(year).slice(0, 4);
+  const todayStatus = getDayStatus(today);
 
   return (
     <>
@@ -103,6 +105,36 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
+      </section>
+
+      <section className="site-container pt-10">
+        <Link
+          href="/er-det-apent-i-dag"
+          className="card block p-5 sm:p-6 hover:border-accent transition-colors"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-accent">
+              I dag
+            </span>
+            <span
+              className={
+                todayStatus.isRedDay
+                  ? "chip-tag chip-tag--practical"
+                  : "chip-tag"
+              }
+            >
+              {todayStatus.isRedDay ? "Rød dag" : "Ikke rød dag"}
+            </span>
+          </div>
+          <p className="mt-2 text-ink font-medium capitalize">
+            {formatNorwegianWeekday(today)} {formatNorwegianDate(today)}
+          </p>
+          <p className="mt-1 text-ink/85">{todayStatus.summary}</p>
+          <p className="mt-2 text-sm text-muted">{todayStatus.openingGuidance}</p>
+          <span className="mt-3 inline-flex items-center gap-1 text-sm text-accent">
+            Er det åpent i dag? <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
       </section>
 
       <section className="site-container py-12 grid gap-8 md:grid-cols-2">

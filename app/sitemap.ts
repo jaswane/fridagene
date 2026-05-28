@@ -2,8 +2,13 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { allYearSlugs } from "@/lib/routing";
 
+// Regenereres daglig slik at årsvinduet følger med over årsskifter.
+export const revalidate = 86400;
+
 const STATIC_ROUTES = [
   "",
+  "/er-det-apent-i-dag",
+  "/nar-stenger-butikkene-pinseaften",
   "/neste-fridag",
   "/arbeidsdager",
   "/om",

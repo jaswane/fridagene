@@ -7,6 +7,7 @@ import {
 } from "@/lib/holidays";
 import { PageHeader } from "@/components/PageHeader";
 import { Disclaimer } from "@/components/Disclaimer";
+import { HistoricalNote } from "@/components/HistoricalNote";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
@@ -77,6 +78,8 @@ export function WorkdaysYearPage({ year }: { year: number }) {
             { name: `Arbeidsdager ${year}` },
           ]}
         />
+
+        <HistoricalNote year={year} />
 
         <section className="mt-8 card p-6">
           <div className="text-[0.72rem] uppercase tracking-[0.14em] text-muted">

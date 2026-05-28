@@ -15,12 +15,4 @@ export const SITE = {
   },
 } as const;
 
-export const SUPPORTED_YEARS = [
-  2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035,
-] as const;
-
-export type SupportedYear = (typeof SUPPORTED_YEARS)[number];
-
-export function isSupportedYear(n: number): n is SupportedYear {
-  return (SUPPORTED_YEARS as readonly number[]).includes(n);
-}
+// Årsvindu/year-strategi er flyttet til lib/years.ts (rullerende, Oslo-basert).

@@ -17,6 +17,8 @@ import {
   webPageSchema,
 } from "@/lib/schema";
 import { SITE } from "@/lib/site";
+import { isSupportedYear } from "@/lib/years";
+import { HistoricalNote } from "@/components/HistoricalNote";
 
 export function HolidaysYearPage({ year }: { year: number }) {
   const officials = publicHolidays(year);
@@ -62,6 +64,8 @@ export function HolidaysYearPage({ year }: { year: number }) {
           ]}
         />
 
+        <HistoricalNote year={year} />
+
         <section className="mt-8">
           <h2 className="font-display text-2xl text-ink mb-3">
             Offentlige helligdager
@@ -85,10 +89,22 @@ export function HolidaysYearPage({ year }: { year: number }) {
             Andre år og oversikter
           </h2>
           <p className="mt-2">
-            <Link href={`/helligdager-${year - 1}`}>Helligdager {year - 1}</Link>
-            {" · "}
-            <Link href={`/helligdager-${year + 1}`}>Helligdager {year + 1}</Link>
-            {" · "}
+            {isSupportedYear(year - 1) && (
+              <>
+                <Link href={`/helligdager-${year - 1}`}>
+                  Helligdager {year - 1}
+                </Link>
+                {" · "}
+              </>
+            )}
+            {isSupportedYear(year + 1) && (
+              <>
+                <Link href={`/helligdager-${year + 1}`}>
+                  Helligdager {year + 1}
+                </Link>
+                {" · "}
+              </>
+            )}
             <Link href={`/langhelger-${year}`}>Langhelger {year}</Link>
             {" · "}
             <Link href={`/inneklemte-dager-${year}`}>
@@ -97,27 +113,17 @@ export function HolidaysYearPage({ year }: { year: number }) {
             {" · "}
             <Link href={`/arbeidsdager-${year}`}>Arbeidsdager {year}</Link>
             {" · "}
-            <Link href={`/flaggdager-${Math.min(2030, Math.max(2025, year))}`}>
-              Flaggdager
-            </Link>
+            <Link href={`/flaggdager-${year}`}>Flaggdager</Link>
           </p>
           <p className="mt-3">
             Tematiske sider:{" "}
-            <Link href={`/paske-${Math.min(2028, Math.max(2025, year))}`}>
-              Påsken
-            </Link>
+            <Link href={`/paske-${year}`}>Påsken</Link>
             {" · "}
-            <Link href={`/pinse-${Math.min(2028, Math.max(2025, year))}`}>
-              Pinse
-            </Link>
+            <Link href={`/pinse-${year}`}>Pinse</Link>
             {" · "}
-            <Link href={`/jul-${Math.min(2028, Math.max(2025, year))}`}>
-              Jul
-            </Link>
+            <Link href={`/jul-${year}`}>Jul</Link>
             {" · "}
-            <Link href={`/mai-${Math.min(2028, Math.max(2025, year))}`}>
-              Mai
-            </Link>
+            <Link href={`/mai-${year}`}>Mai</Link>
           </p>
         </section>
 

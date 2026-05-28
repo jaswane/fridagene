@@ -8,6 +8,7 @@ import {
 } from "@/lib/holidays";
 import { PageHeader } from "@/components/PageHeader";
 import { Disclaimer } from "@/components/Disclaimer";
+import { HistoricalNote } from "@/components/HistoricalNote";
 import { JsonLd } from "@/components/JsonLd";
 import {
   breadcrumbSchema,
@@ -65,6 +66,8 @@ export function BridgeDaysYearPage({ year }: { year: number }) {
             { name: `Inneklemte dager ${year}` },
           ]}
         />
+
+        <HistoricalNote year={year} />
 
         <section className="mt-8">
           {bridges.length === 0 ? (

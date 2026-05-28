@@ -7,6 +7,7 @@ import {
 } from "@/lib/holidays";
 import { PageHeader } from "@/components/PageHeader";
 import { Disclaimer } from "@/components/Disclaimer";
+import { HistoricalNote } from "@/components/HistoricalNote";
 import { JsonLd } from "@/components/JsonLd";
 import {
   breadcrumbSchema,
@@ -59,6 +60,8 @@ export function LongWeekendsYearPage({ year }: { year: number }) {
             { name: `Langhelger ${year}` },
           ]}
         />
+
+        <HistoricalNote year={year} />
 
         <section className="mt-8">
           {longs.length === 0 ? (

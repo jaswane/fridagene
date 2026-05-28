@@ -7,6 +7,7 @@ import {
 } from "@/lib/holidays";
 import { PageHeader } from "@/components/PageHeader";
 import { Disclaimer } from "@/components/Disclaimer";
+import { HistoricalNote } from "@/components/HistoricalNote";
 import { JsonLd } from "@/components/JsonLd";
 import {
   breadcrumbSchema,
@@ -77,6 +78,8 @@ export function FlagDaysYearPage({ year }: { year: number }) {
             { name: `Flaggdager ${year}` },
           ]}
         />
+
+        <HistoricalNote year={year} />
 
         <section className="mt-8">
           <ul className="card divide-y divide-line/70">
