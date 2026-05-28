@@ -115,6 +115,41 @@ export default function OpenTodayPage() {
           </div>
         </section>
 
+        <section className="mt-8 card p-6">
+          <h2 className="font-display text-xl text-ink">Alkoholsalg i dag</h2>
+          <p className="mt-2 text-ink/85 leading-relaxed">
+            {status.alcoholGuidance}
+          </p>
+          <p className="mt-3 text-sm text-muted">
+            Kilder og mer info:{" "}
+            <a
+              href="https://www.helsedirektoratet.no/rundskriv/alkoholloven-med-kommentarer"
+              target="_blank"
+              rel="noopener nofollow"
+            >
+              Helsedirektoratet om alkoholloven (§ 3-7)
+            </a>
+            {" · "}
+            <a
+              href="https://lovdata.no/lov/1989-06-02-27/§3-4"
+              target="_blank"
+              rel="noopener nofollow"
+            >
+              Lovdata § 3-4 (Vinmonopolet)
+            </a>
+            {" · "}
+            <a
+              href="https://www.vinmonopolet.no/"
+              target="_blank"
+              rel="noopener nofollow"
+            >
+              vinmonopolet.no
+            </a>
+            {" · "}
+            <Link href="/alkoholsalg-helligdager">Alkoholsalg på helligdager</Link>
+          </p>
+        </section>
+
         <section className="mt-10 narrow-container prose-soft px-0">
           <h2 className="font-display text-2xl text-ink">
             Hva påvirker åpningstidene?

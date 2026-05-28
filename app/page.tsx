@@ -96,6 +96,19 @@ export default function HomePage() {
             unødvendig støy.
           </p>
 
+          <p className="mt-5 text-base sm:text-lg text-ink">
+            {weekend.isWeekendNow ? (
+              <span>{weekend.label}</span>
+            ) : (
+              <>
+                Men først:{" "}
+                <span className="text-accent font-medium">
+                  {weekend.label.charAt(0).toLowerCase() + weekend.label.slice(1)}
+                </span>
+              </>
+            )}
+          </p>
+
           <div className="mt-7 flex flex-wrap gap-2">
             <Link href="/neste-fridag" className="btn-primary">
               Neste fridag <ArrowRight className="h-4 w-4" />
@@ -107,11 +120,6 @@ export default function HomePage() {
               Helligdager {year}
             </Link>
           </div>
-
-          <p className="mt-4 text-sm text-muted">
-            {weekend.isWeekendNow ? "" : "Men først — "}
-            <span className="text-ink/80">{weekend.label}</span>
-          </p>
         </div>
       </section>
 

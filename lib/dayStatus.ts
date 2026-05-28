@@ -8,6 +8,7 @@
  */
 
 import {
+  addDays,
   bridgeDays,
   formatNorwegianDate,
   formatNorwegianWeekday,
@@ -52,6 +53,13 @@ export interface DayStatus {
   summary: string;
   /** Forsiktig generell vurdering av butikker/åpningstider */
   openingGuidance: string;
+  /**
+   * Generell veiledning om salg av alkoholholdig drikk gruppe 1 (øl o.l.) i
+   * dagligvarebutikk, basert på alkoholloven § 3-7. Aldri lokale fasittider.
+   */
+  alcoholGuidance: string;
+  /** Er i dag dag før søn-/helligdag (med §3-7-unntak)? */
+  isDayBeforeRedDay: boolean;
 }
 
 function findByDate<T extends { date: string }>(
@@ -101,6 +109,28 @@ export function getDayStatus(date: Date): DayStatus {
 
   const openingGuidance = buildOpeningGuidance(category, practical?.name);
 
+  // Dag før søn-/helligdag (alkoholloven § 3-7), med unntak: dagen før
+  // Kristi himmelfartsdag, 1. mai og 17. mai regnes ikke som dag før
+  // søn-/helligdag (med mindre neste dag uansett er en søndag).
+  const tomorrow = addDays(date, 1);
+  const tomorrowIsSunday = tomorrow.getUTCDay() === 0;
+  const tomorrowHoliday = findByDate(
+    publicHolidays(tomorrow.getUTCFullYear()),
+    isoDate(tomorrow)
+  );
+  const EXCEPTED = new Set(["kristi-himmelfart", "arbeidernes-dag", "grunnlovsdag"]);
+  const tomorrowExcepted = Boolean(
+    tomorrowHoliday && EXCEPTED.has(tomorrowHoliday.id)
+  );
+  const isDayBeforeRedDay =
+    tomorrowIsSunday || (Boolean(tomorrowHoliday) && !tomorrowExcepted);
+
+  const alcoholGuidance = buildAlcoholGuidance({
+    isRedDay,
+    isDayBeforeRedDay,
+    practicalName: practical?.name,
+  });
+
   return {
     date: iso,
     formatted: formatNorwegianDate(date),
@@ -118,7 +148,36 @@ export function getDayStatus(date: Date): DayStatus {
     category,
     summary,
     openingGuidance,
+    alcoholGuidance,
+    isDayBeforeRedDay,
   };
+}
+
+function buildAlcoholGuidance(args: {
+  isRedDay: boolean;
+  isDayBeforeRedDay: boolean;
+  practicalName?: string;
+}): string {
+  const tail =
+    " Salg av alkohol i butikk er regulert lokalt av kommunen innenfor nasjonale maksimaltider, så tidene kan variere — sjekk kommunen eller butikken. Vinmonopolet har egne åpningstider; sjekk vinmonopolet.no eller ditt lokale utsalg.";
+
+  if (args.isRedDay) {
+    return (
+      "På søn- og helligdager er salg av alkoholholdig drikk i dagligvarebutikk som hovedregel ikke tillatt." +
+      tail
+    );
+  }
+  if (args.isDayBeforeRedDay) {
+    const eve = args.practicalName ? ` (${args.practicalName})` : "";
+    return (
+      `Dette er dag før en søn-/helligdag${eve}. Salg av øl og annen alkoholholdig drikk gruppe 1 i butikk stopper da normalt senest kl. 18.00.` +
+      tail
+    );
+  }
+  return (
+    "På vanlige hverdager stopper salg av øl og annen alkoholholdig drikk gruppe 1 i butikk normalt senest kl. 20.00." +
+    tail
+  );
 }
 
 function buildSummary(args: {

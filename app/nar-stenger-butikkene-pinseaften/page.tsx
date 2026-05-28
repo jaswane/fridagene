@@ -131,6 +131,33 @@ export default function PentecostEvePage() {
           </ul>
         </section>
 
+        <section className="mt-8 card p-6">
+          <h2 className="font-display text-xl text-ink">
+            Alkoholsalg på pinseaften
+          </h2>
+          <p className="mt-2 text-ink/85 leading-relaxed">
+            Pinseaften er ikke en offentlig helligdag, men åpningstid og ølsalg
+            kan likevel være kortere. Fordi pinseaften er en lørdag — dagen før
+            1. pinsedag — stopper salg av øl og annen alkoholholdig drikk gruppe
+            1 i butikk normalt senest kl. 18.00. Tidene er regulert lokalt av
+            kommunen innenfor nasjonale rammer, så sjekk lokal butikk eller
+            kommune. Vinmonopolet kan ha egne åpningstider — sjekk{" "}
+            <a
+              href="https://www.vinmonopolet.no/"
+              target="_blank"
+              rel="noopener nofollow"
+            >
+              vinmonopolet.no
+            </a>
+            .
+          </p>
+          <p className="mt-3 text-sm">
+            <Link href="/alkoholsalg-helligdager">
+              Mer om alkoholsalg på helligdager →
+            </Link>
+          </p>
+        </section>
+
         <section className="mt-10 narrow-container prose-soft px-0">
           <h2 className="font-display text-2xl text-ink">
             Pinseaften, 1. og 2. pinsedag
