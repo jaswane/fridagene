@@ -129,6 +129,12 @@ export function SeasonPage({ season, year }: { season: Season; year: number }) {
             <Link href={`/inneklemte-dager-${year}`}>
               Inneklemte dager {year}
             </Link>
+            {(season === "mai" || season === "jul") && (
+              <>
+                {" · "}
+                <Link href={`/flaggdager-${year}`}>Flaggdager {year}</Link>
+              </>
+            )}
             {" · "}
             <Link href={`/${season}-${year + 1}`}>
               {meta.label} {year + 1}

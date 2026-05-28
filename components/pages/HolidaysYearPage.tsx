@@ -96,6 +96,10 @@ export function HolidaysYearPage({ year }: { year: number }) {
             </Link>
             {" · "}
             <Link href={`/arbeidsdager-${year}`}>Arbeidsdager {year}</Link>
+            {" · "}
+            <Link href={`/flaggdager-${Math.min(2030, Math.max(2025, year))}`}>
+              Flaggdager
+            </Link>
           </p>
           <p className="mt-3">
             Tematiske sider:{" "}

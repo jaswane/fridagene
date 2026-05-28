@@ -33,9 +33,9 @@ function buildColumns(year: number) {
       heading: "Høytider",
       items: [
         { href: `/paske-${year}`, label: `Påsken ${year}` },
-        { href: `/pinse-${year}`, label: `Pinse ${year}` },
         { href: `/jul-${year}`, label: `Jul ${year}` },
         { href: `/mai-${year}`, label: `Mai ${year}` },
+        { href: `/flaggdager-${year}`, label: `Flaggdager ${year}` },
       ],
     },
   ];

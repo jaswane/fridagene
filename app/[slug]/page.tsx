@@ -8,6 +8,7 @@ import { BridgeDaysYearPage } from "@/components/pages/BridgeDaysYearPage";
 import { WorkdaysYearPage } from "@/components/pages/WorkdaysYearPage";
 import { SeasonPage } from "@/components/pages/SeasonPage";
 import { FaMestFriYearPage } from "@/components/pages/FaMestFriYearPage";
+import { FlagDaysYearPage } from "@/components/pages/FlagDaysYearPage";
 
 export const dynamicParams = false;
 // Daglig revalidering så header/footer holder seg ferskt på årets skifte —
@@ -58,6 +59,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         description: `Hvilke perioder i ${year} gir mest sammenhengende fri med færrest feriedager? Rangerte tips basert på norske helligdager.`,
         path: `/fa-mest-fri-${year}`,
       });
+    case "flaggdager":
+      return pageMetadata({
+        title: `Flaggdager i Norge ${year} — datoer og anledning`,
+        description: `Offisielle norske flaggdager i ${year} med dato og ukedag. En flaggdag er ikke nødvendigvis en fridag.`,
+        path: `/flaggdager-${year}`,
+      });
     case "paske":
       return pageMetadata({
         title: `Påsken ${year} — datoer og helligdager`,
@@ -101,6 +108,8 @@ export default async function Page({ params }: PageProps) {
       return <BridgeDaysYearPage year={year} />;
     case "fa-mest-fri":
       return <FaMestFriYearPage year={year} />;
+    case "flaggdager":
+      return <FlagDaysYearPage year={year} />;
     case "paske":
     case "pinse":
     case "jul":

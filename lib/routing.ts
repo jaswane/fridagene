@@ -6,6 +6,7 @@ export type YearPageKind =
   | "langhelger"
   | "inneklemte-dager"
   | "fa-mest-fri"
+  | "flaggdager"
   | "paske"
   | "pinse"
   | "jul"
@@ -25,6 +26,9 @@ const INNEKLEMT_YEARS: readonly number[] = [
 const PLANNING_YEARS: readonly number[] = [
   2025, 2026, 2027, 2028, 2029, 2030,
 ];
+const FLAG_YEARS: readonly number[] = [
+  2025, 2026, 2027, 2028, 2029, 2030,
+];
 const SEASON_YEARS: readonly number[] = [2025, 2026, 2027, 2028];
 
 const YEARS_BY_KIND: Record<YearPageKind, readonly number[]> = {
@@ -33,6 +37,7 @@ const YEARS_BY_KIND: Record<YearPageKind, readonly number[]> = {
   langhelger: LANGHELG_YEARS,
   "inneklemte-dager": INNEKLEMT_YEARS,
   "fa-mest-fri": PLANNING_YEARS,
+  flaggdager: FLAG_YEARS,
   paske: SEASON_YEARS,
   pinse: SEASON_YEARS,
   jul: SEASON_YEARS,
@@ -45,6 +50,7 @@ const YEARS_BY_KIND: Record<YearPageKind, readonly number[]> = {
 const KINDS: YearPageKind[] = [
   "inneklemte-dager",
   "fa-mest-fri",
+  "flaggdager",
   "helligdager",
   "arbeidsdager",
   "langhelger",

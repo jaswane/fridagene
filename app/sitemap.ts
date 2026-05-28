@@ -18,6 +18,7 @@ function priorityFor(slug: string): number {
   if (slug.startsWith("arbeidsdager-")) return 0.7;
   if (slug.startsWith("langhelger-")) return 0.7;
   if (slug.startsWith("inneklemte-dager-")) return 0.7;
+  if (slug.startsWith("flaggdager-")) return 0.7;
   return 0.6;
 }
 
