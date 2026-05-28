@@ -26,7 +26,7 @@ function buildColumns(year: number) {
       items: [
         { href: "/arbeidsdager", label: "Arbeidsdager-kalkulator" },
         { href: `/arbeidsdager-${year}`, label: `Arbeidsdager ${year}` },
-        { href: `/arbeidsdager-${year + 1}`, label: `Arbeidsdager ${year + 1}` },
+        { href: "/fellesferien", label: "Når er fellesferien?" },
       ],
     },
     {

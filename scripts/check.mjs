@@ -7,6 +7,10 @@ import {
   workdaysInYear,
   fridayAfterAscension,
   isoDate,
+  isoWeekMonday,
+  addDays,
+  getWeekendStatus,
+  dateOf,
 } from "../lib/holidays.ts";
 import {
   FIRST_SUPPORTED_YEAR,
@@ -70,6 +74,16 @@ for (const lw of longWeekends(2026))
   );
 
 console.log("\n--- Friday after Ascension 2026 ---", isoDate(fridayAfterAscension(2026)));
+
+console.log("\n--- Fellesferie + helg-status ---");
+assert("fellesferie 2026 uke 28 = mandag 6. juli", isoDate(isoWeekMonday(2026, 28)) === "2026-07-06");
+assert("fellesferie 2026 uke 30 fredag = 24. juli", isoDate(addDays(isoWeekMonday(2026, 30), 4)) === "2026-07-24");
+// 2026-05-29 er fredag → "Helgen starter i morgen"
+assert("fredag → helg i morgen", getWeekendStatus(dateOf(2026, 5, 29)).label === "Helgen starter i morgen.");
+// 2026-05-25 er mandag → helg om 5 dager
+assert("mandag → helg om 5 dager", getWeekendStatus(dateOf(2026, 5, 25)).label === "Helg om 5 dager.");
+// 2026-05-30 er lørdag → helg nå
+assert("lørdag → det er helg nå", getWeekendStatus(dateOf(2026, 5, 30)).isWeekendNow === true);
 
 console.log(`\n${failures === 0 ? "ALL CHECKS PASSED" : failures + " CHECK(S) FAILED"}`);
 if (failures > 0) process.exit(1);

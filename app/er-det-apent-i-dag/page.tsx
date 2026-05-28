@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
 import { getDayStatus } from "@/lib/dayStatus";
+import { guideSlugForHolidayId } from "@/lib/holidayGuides";
 import {
   todayInOslo,
   formatNorwegianWeekday,
@@ -44,6 +45,9 @@ export default function OpenTodayPage() {
   const status = getDayStatus(today);
   const year = today.getUTCFullYear();
   const next = nextPublicHoliday(today);
+  const todayGuideSlug = status.publicHolidayId
+    ? guideSlugForHolidayId(status.publicHolidayId)
+    : undefined;
 
   const shortAnswer = status.isRedDay
     ? "Som hovedregel: mange butikker holder stengt eller har redusert åpningstid i dag."
@@ -89,6 +93,13 @@ export default function OpenTodayPage() {
           <p className="mt-3 text-lg text-ink/90">{status.summary}</p>
           <p className="mt-2 text-ink/85">{shortAnswer}</p>
           <p className="mt-4 text-sm text-muted">{status.openingGuidance}</p>
+          {todayGuideSlug && (
+            <p className="mt-3 text-sm">
+              <Link href={`/helligdager/${todayGuideSlug}`}>
+                Mer om {status.publicHolidayName} →
+              </Link>
+            </p>
+          )}
           <div className="mt-5 flex flex-wrap gap-2 text-sm">
             <span className={status.isRedDay ? "chip-tag chip-tag--practical" : "chip-tag"}>
               {status.isRedDay ? "Rød dag" : "Ikke rød dag"}

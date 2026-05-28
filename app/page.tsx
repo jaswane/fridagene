@@ -5,6 +5,7 @@ import {
   formatNorwegianDate,
   formatNorwegianDateShort,
   formatNorwegianWeekday,
+  getWeekendStatus,
   longWeekends,
   nextPublicHoliday,
   parseIso,
@@ -18,6 +19,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { faqSchema, webPageSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
 import { getDayStatus } from "@/lib/dayStatus";
+import { guideSlugForHolidayId } from "@/lib/holidayGuides";
 
 export const revalidate = 3600;
 
@@ -51,6 +53,7 @@ export default function HomePage() {
   const workTotal = workdaysInYear(year);
   const planTips = planningPicks(year).slice(0, 4);
   const todayStatus = getDayStatus(today);
+  const weekend = getWeekendStatus(today);
 
   return (
     <>
@@ -104,6 +107,11 @@ export default function HomePage() {
               Helligdager {year}
             </Link>
           </div>
+
+          <p className="mt-4 text-sm text-muted">
+            {weekend.isWeekendNow ? "" : "Men først — "}
+            <span className="text-ink/80">{weekend.label}</span>
+          </p>
         </div>
       </section>
 
@@ -155,7 +163,16 @@ export default function HomePage() {
                   <span className="w-28 shrink-0 text-sm text-muted capitalize">
                     {formatNorwegianWeekday(d, true)} {formatNorwegianDateShort(d)}
                   </span>
-                  <span className="text-ink">{h.name}</span>
+                  {guideSlugForHolidayId(h.id) ? (
+                    <Link
+                      href={`/helligdager/${guideSlugForHolidayId(h.id)}`}
+                      className="text-ink hover:text-accent"
+                    >
+                      {h.name}
+                    </Link>
+                  ) : (
+                    <span className="text-ink">{h.name}</span>
+                  )}
                 </li>
               );
             })}
@@ -299,6 +316,12 @@ export default function HomePage() {
               className="text-accent hover:underline"
             >
               Se hele rangeringen for {year} →
+            </Link>
+          </p>
+          <p className="mt-2 text-sm text-muted">
+            Planlegger du sommerferie?{" "}
+            <Link href="/fellesferien" className="text-accent hover:underline">
+              Når er fellesferien?
             </Link>
           </p>
         </div>

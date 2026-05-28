@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function buildNav(year: number) {
   return [
+    { href: "/er-det-apent-i-dag", label: "Åpent i dag" },
     { href: "/neste-fridag", label: "Neste fridag" },
     { href: `/helligdager-${year}`, label: "Helligdager" },
     { href: `/langhelger-${year}`, label: "Langhelger" },

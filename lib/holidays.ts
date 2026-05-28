@@ -444,6 +444,52 @@ export function fridayAfterAscension(y: number): Date {
 }
 
 // ---------------------------------------------------------------------------
+// ISO-uke → mandag (brukes til fellesferie-perioden)
+// ---------------------------------------------------------------------------
+
+/** Mandagen i gitt ISO-uke for et år. ISO-uke 1 inneholder 4. januar. */
+export function isoWeekMonday(year: number, week: number): Date {
+  const jan4 = dateOf(year, 1, 4);
+  const jan4Dow = jan4.getUTCDay() === 0 ? 7 : jan4.getUTCDay(); // 1=man..7=søn
+  const mondayWeek1 = addDays(jan4, -(jan4Dow - 1));
+  return addDays(mondayWeek1, (week - 1) * 7);
+}
+
+// ---------------------------------------------------------------------------
+// Helg-status (vanlig lørdag/søndag — IKKE offentlig helligdag)
+// ---------------------------------------------------------------------------
+
+export interface WeekendStatus {
+  /** Er det lørdag eller søndag nå? */
+  isWeekendNow: boolean;
+  /** Dager til neste lørdag (0 hvis i dag er lørdag). */
+  daysUntilSaturday: number;
+  /** Ferdig formatert, kort setning. */
+  label: string;
+}
+
+/**
+ * Praktisk helgeopplysning. Helg = lørdag + søndag (ikke en offentlig
+ * helligdag). Brukes som en liten sekundær opplysning i hero.
+ */
+export function getWeekendStatus(date: Date): WeekendStatus {
+  const dow = date.getUTCDay(); // 0 = søndag … 6 = lørdag
+  if (dow === 6 || dow === 0) {
+    return { isWeekendNow: true, daysUntilSaturday: dow === 6 ? 0 : 6, label: "Det er helg nå." };
+  }
+  if (dow === 5) {
+    return { isWeekendNow: false, daysUntilSaturday: 1, label: "Helgen starter i morgen." };
+  }
+  // mandag–torsdag
+  const days = 6 - dow;
+  return {
+    isWeekendNow: false,
+    daysUntilSaturday: days,
+    label: `Helg om ${days} ${days === 1 ? "dag" : "dager"}.`,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Planlegging: "få mest fri med færrest feriedager"
 // ---------------------------------------------------------------------------
 

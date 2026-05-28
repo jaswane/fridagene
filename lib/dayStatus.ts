@@ -37,6 +37,8 @@ export interface DayStatus {
   isWeekend: boolean;
   isPublicHoliday: boolean;
   publicHolidayName?: string;
+  /** Holiday.id for offentlig helligdag (for lenke til forklaringsside). */
+  publicHolidayId?: string;
   isFlagDay: boolean;
   flagDayName?: string;
   /** Praktisk fridag = julaften/nyttårsaften/påskeaften/pinseaften */
@@ -106,6 +108,7 @@ export function getDayStatus(date: Date): DayStatus {
     isWeekend: weekend,
     isPublicHoliday,
     publicHolidayName: publicHoliday?.name,
+    publicHolidayId: publicHoliday?.id,
     isFlagDay,
     flagDayName: flag?.name,
     isPracticalDay,

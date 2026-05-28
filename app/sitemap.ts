@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { allYearSlugs } from "@/lib/routing";
+import { HOLIDAY_GUIDE_SLUGS } from "@/lib/holidayGuides";
 
 // Regenereres daglig slik at årsvinduet følger med over årsskifter.
 export const revalidate = 86400;
@@ -9,6 +10,7 @@ const STATIC_ROUTES = [
   "",
   "/er-det-apent-i-dag",
   "/nar-stenger-butikkene-pinseaften",
+  "/fellesferien",
   "/neste-fridag",
   "/arbeidsdager",
   "/om",
@@ -46,5 +48,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: priorityFor(slug),
   }));
 
-  return [...staticEntries, ...yearEntries];
+  // Helligdagsforklaringssider /helligdager/[slug]
+  const guideEntries: MetadataRoute.Sitemap = HOLIDAY_GUIDE_SLUGS.map((slug) => ({
+    url: `${SITE.url}/helligdager/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticEntries, ...yearEntries, ...guideEntries];
 }

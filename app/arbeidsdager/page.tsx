@@ -7,6 +7,7 @@ import { Disclaimer } from "@/components/Disclaimer";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, webPageSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
+import { getCurrentYear } from "@/lib/currentYear";
 
 export const revalidate = 86400;
 
@@ -18,6 +19,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function WorkdaysPage() {
+  const year = getCurrentYear();
   return (
     <>
       <JsonLd
@@ -66,11 +68,15 @@ export default function WorkdaysPage() {
           </p>
           <p className="mt-3">
             Se også:{" "}
-            <Link href="/arbeidsdager-2026">Arbeidsdager 2026</Link>
+            <Link href={`/arbeidsdager-${year}`}>Arbeidsdager {year}</Link>
             {" · "}
-            <Link href="/arbeidsdager-2027">Arbeidsdager 2027</Link>
+            <Link href={`/arbeidsdager-${year + 1}`}>
+              Arbeidsdager {year + 1}
+            </Link>
             {" · "}
-            <Link href="/helligdager-2026">Helligdager 2026</Link>
+            <Link href="/fellesferien">Når er fellesferien?</Link>
+            {" · "}
+            <Link href={`/helligdager-${year}`}>Helligdager {year}</Link>
           </p>
         </section>
 

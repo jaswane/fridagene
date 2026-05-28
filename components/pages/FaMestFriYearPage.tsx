@@ -140,6 +140,8 @@ export function FaMestFriYearPage({ year }: { year: number }) {
             {" · "}
             <Link href="/arbeidsdager">Arbeidsdager-kalkulator</Link>
             {" · "}
+            <Link href="/fellesferien">Når er fellesferien?</Link>
+            {" · "}
             <Link href={`/fa-mest-fri-${year + 1}`}>
               Få mest fri i {year + 1}
             </Link>

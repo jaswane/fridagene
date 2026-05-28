@@ -1,5 +1,7 @@
+import Link from "next/link";
 import type { Holiday } from "@/lib/holidays";
 import { formatNorwegianDate, formatNorwegianWeekday, parseIso } from "@/lib/holidays";
+import { guideSlugForHolidayId } from "@/lib/holidayGuides";
 
 export function HolidayList({
   holidays,
@@ -13,6 +15,7 @@ export function HolidayList({
       {holidays.map((h) => {
         const d = parseIso(h.date);
         const weekday = formatNorwegianWeekday(d);
+        const guideSlug = guideSlugForHolidayId(h.id);
         return (
           <li
             key={h.id + h.date}
@@ -24,7 +27,16 @@ export function HolidayList({
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-ink font-medium">{h.name}</span>
+                {guideSlug ? (
+                  <Link
+                    href={`/helligdager/${guideSlug}`}
+                    className="text-ink font-medium underline decoration-line underline-offset-4 hover:decoration-accent hover:text-accent"
+                  >
+                    {h.name}
+                  </Link>
+                ) : (
+                  <span className="text-ink font-medium">{h.name}</span>
+                )}
                 {showKind && (
                   <span
                     className={
