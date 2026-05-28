@@ -124,6 +124,8 @@ export function HolidaysYearPage({ year }: { year: number }) {
             <Link href={`/jul-${year}`}>Jul</Link>
             {" · "}
             <Link href={`/mai-${year}`}>Mai</Link>
+            {" · "}
+            <Link href="/religiose-hoytider">Religiøse høytider</Link>
           </p>
         </section>
 
