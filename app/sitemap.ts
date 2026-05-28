@@ -11,6 +11,7 @@ const STATIC_ROUTES = [
   "/er-det-apent-i-dag",
   "/nar-stenger-butikkene-pinseaften",
   "/alkoholsalg-helligdager",
+  "/religiose-hoytider",
   "/fellesferien",
   "/neste-fridag",
   "/arbeidsdager",
